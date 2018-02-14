@@ -22,7 +22,7 @@ class Issue extends Component {
 }
 const mapStateToProps = (state)=>{
    return {
-    issue: state.issueReducers[state.issueReducers.length - 1]
+    issue: state.issueReducers.issue
    }
 }
 export default connect(mapStateToProps, actions)(Issue);

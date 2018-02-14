@@ -1,15 +1,21 @@
+const INITIAL_STATE = {
+    issues: [],
+    pagination: ""
+};
+export default (state = INITIAL_STATE, action) => {
+    switch (action.type) {
+        case "listIssues":
+            return {
+                ...state,
+                issues: action.payload.data,
+                pagination: action.payload.headers.link
+            };
+        case "fetchIssue":
+            return {...state, issue:action.payload };
 
-const INITIAL_STATE = [];
-export default (state = INITIAL_STATE, action)=>{
-   switch(action.type){
-    case"listIssues":
-      return action.payload;
-    case "fetchIssue":
-      return [...state, action.payload];
+        case "changeFilter":
+            return {...state, issues:action.payload };
+    }
 
-    case "changeFilter":
-      return action.payload;
-   }
-
-   return state;
-}
+    return state;
+};

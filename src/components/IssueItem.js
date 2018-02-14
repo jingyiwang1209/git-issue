@@ -6,7 +6,7 @@ const IssueItem = props => {
     const { issue } = props;
     let state = props.issue.state === "open" ? "opend" : "closed";
     return (
-        <li className="issue" key={issue.id}>
+        <li className="issue" key={issue.number}>
             <div className="issue-header">
                 <Link className="issue-title" to={`/issue/${issue.number}`}>
                     {issue.title}{" "}

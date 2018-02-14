@@ -7,7 +7,7 @@ import SearchBar from "./SearchBar";
 import IssueItem from "./IssueItem";
 import Pagination from './Pagination';
 
-class IssueList extends Component {
+class IssuesPerPage extends Component {
     state = {
         value: ""
     };
@@ -24,9 +24,7 @@ class IssueList extends Component {
         });
     }
     componentWillMount() {
-        const pageNumber = this.props.match.params.pageNumber
-        console.log("componentWillMountpageNumber", pageNumber)
-        this.props.listIssues(pageNumber);
+        this.props.listIssues();
     }
 
     handleFilterChange(value) {
@@ -75,4 +73,4 @@ const mapStateToProps = state => {
         link:state.issueReducers.pagination
     };
 };
-export default connect(mapStateToProps, actions)(IssueList);
+export default connect(mapStateToProps, actions)(IssuesPerPage);

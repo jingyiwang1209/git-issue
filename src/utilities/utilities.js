@@ -11,3 +11,17 @@ export const calculateHourDiff = pastTime => {
     }
     return days >= 1 ? days + " days" : hours + " hours";
 };
+
+export const parseLink =(link) =>{
+  let pages = link.match(/\page=\d+/g);
+  let lastPage;
+  if(pages.length > 3){
+     lastPage = pages[2].slice(pages[2].indexOf('=') + 1)
+  }else{
+     lastPage = pages[1].slice(pages[1].indexOf('=') + 1)
+
+  }
+
+  return lastPage;
+
+}

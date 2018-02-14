@@ -1,12 +1,19 @@
 import axios from "axios";
-export const listIssues = () => async dispatch => {
-  const response = await axios.get(
-    "https://api.github.com/repos/facebook/react/issues"
-  );
+export const listIssues = (pageNumber) => async dispatch => {
+  let response;
+  if (!pageNumber) {
+     response = await axios.get(
+      "https://api.github.com/repos/facebook/react/issues"
+    );
+  } else {
+    response = await axios.get(
+      `https://api.github.com/repos/facebook/react/issues?page=${pageNumber}`
+    );
+  }
 
   dispatch({
     type: "listIssues",
-    payload: response.data
+    payload: response
   });
 };
 
@@ -21,12 +28,12 @@ export const fetchIssue = issueNumber => async dispatch => {
   });
 };
 
-export const changeFilter = (value)=> async dispatch=>{
+export const changeFilter = value => async dispatch => {
   const response = await axios.get(
-     `https://api.github.com/repos/facebook/react/issues?state=${value}`
-    )
+    `https://api.github.com/repos/facebook/react/issues?state=${value}`
+  );
   dispatch({
-    type:"changeFilter",
-    payload:response.data
+    type: "changeFilter",
+    payload: response.data
   });
 };
