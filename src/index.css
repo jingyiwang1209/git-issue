@@ -25,10 +25,23 @@ body {
   margin: auto;
 }
 
+.issue-title {
+  float:left;
+}
+
+.issue-comment {
+  float:right;
+}
+
 .issue-body img {
   max-width: 100%;
 }
 
+.issue-header::after{
+  content:'';
+  clear:both;
+  display:block;
+}
 pre {
   background:lightblue;
 }

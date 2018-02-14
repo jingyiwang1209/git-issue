@@ -1,37 +1,45 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import * as actions from "../actions";
-import SelectPanel from './SelectPanel';
+import { calculateHourDiff } from '../utilities/utilities';
+import SelectPanel from "./SelectPanel";
+import SearchBar from "./SearchBar";
 
 class IssueList extends Component {
-    renderTimeDiff(pastTime) {
-
-        let past = new Date(pastTime);
-        past = past.getTime();
-        let now = Date.now('UTC');
-        let elapsed = now - past;
-        let diff = new Date(elapsed);
-        let hours = diff.getHours();
-        let days = 0
-        if(hours >= 24){ days += 1}
-        return days >= 1 ?  days + ' days' : hours + ' hours';
+    state={
+        value:""
     }
-    renderIssues(issues) {
+    renderIssues(issues, value) {
         // when coming back from other links, issue can be undefined
-        if(!issues) { return <div>Loading..</div>}
+        if (!issues) {
+            return <div>Loading..</div>;
+        }
         return issues.map(issue => {
             let state = issue.state === "open" ? "opend" : "closed";
-
+            if(issue.title.toLowerCase().indexOf(value.toLowerCase()) === -1){return  }
             return (
                 <li className="issue" key={issue.id}>
-
-                    <Link style={{float:'left'}} to={`/issue/${issue.number}`}>{issue.title} </Link>
-                    <span style={{float:'right'}}><Link to={issue.comments_url}>{issue.comments > 1 ? issue.comments+' comments':""} </Link></span>
-                    <div style={{clear:'both'}}></div>
+                    <div className="issue-header">
+                        <Link
+                            className="issue-title"
+                            to={`/issue/${issue.number}`}
+                        >
+                            {issue.title}{" "}
+                        </Link>
+                        <span className="issue-comment">
+                            <Link to={issue.comments_url}>
+                                {issue.comments > 1 ? (
+                                    issue.comments + " comments"
+                                ) : (
+                                    ""
+                                )}{" "}
+                            </Link>
+                        </span>
+                    </div>
                     <div>
                         #{issue.number} {state}{" "}
-                        {this.renderTimeDiff(issue.created_at)} ago by{" "}
+                        {calculateHourDiff(issue.created_at)} ago by{" "}
                         {issue.user.login}{" "}
                     </div>
                 </li>
@@ -42,18 +50,30 @@ class IssueList extends Component {
         this.props.listIssues();
     }
 
-    handleFilterChange(value){
-        console.log(value)
-        this.props.changeFilter(value)
+    handleFilterChange(value) {
+        this.props.changeFilter(value);
+    }
+
+    handleInputChange(value){
+        this.setState({
+            value,
+        })
     }
     render() {
+        const inputValue = this.state.value
         return (
             <div className="container">
                 <div>
-                    <SelectPanel onChange={(value)=>this.handleFilterChange(value)}/>
+                    <SelectPanel
+                        onChange={value => this.handleFilterChange(value)}
+                    />
+                    <SearchBar
+                       value={this.state.value}
+                       onChange={(value)=>this.handleInputChange(value)}
+                    />
                 </div>
                 <ul className="issue-list">
-                    {this.renderIssues(this.props.issues)}
+                    {this.renderIssues(this.props.issues, inputValue)}
                 </ul>
             </div>
         );
@@ -61,7 +81,6 @@ class IssueList extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log('liststate',state.issueReducers)
     return {
         issues: state.issueReducers
     };

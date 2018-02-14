@@ -21,7 +21,6 @@ class Issue extends Component {
     }
 }
 const mapStateToProps = (state)=>{
-   console.log('state', state.issueReducers)
    return {
     issue: state.issueReducers[state.issueReducers.length - 1]
    }
