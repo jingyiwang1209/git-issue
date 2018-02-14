@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import * as actions from "../actions";
+import SelectPanel from './SelectPanel';
 
 class IssueList extends Component {
     renderTimeDiff(pastTime) {
@@ -49,13 +50,7 @@ class IssueList extends Component {
         return (
             <div className="container">
                 <div>
-                    <select className='filter' onChange={(e)=>{this.handleFilterChange(e.target.value)}}>
-                       <option default>Filter</option>
-                       <option value='all'>All</option>
-                       <option value='open'>Open</option>
-                       <option value='closed'>Closed</option>
-
-                    </select>
+                    <SelectPanel onChange={(value)=>this.handleFilterChange(value)}/>
                 </div>
                 <ul className="issue-list">
                     {this.renderIssues(this.props.issues)}
