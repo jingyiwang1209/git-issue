@@ -26,7 +26,7 @@ class IssueList extends Component {
                 <li className="issue" key={issue.id}>
 
                     <Link style={{float:'left'}} to={`/issue/${issue.number}`}>{issue.title} </Link>
-                    <span style={{float:'right'}}><Link to={issue.comments_url}>{issue.comments} comments</Link></span>
+                    <span style={{float:'right'}}><Link to={issue.comments_url}>{issue.comments > 1 ? issue.comments+' comments':""} </Link></span>
                     <div style={{clear:'both'}}></div>
                     <div>
                         #{issue.number} {state}{" "}
