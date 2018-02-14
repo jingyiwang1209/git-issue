@@ -24,7 +24,10 @@ class IssueList extends Component {
 
             return (
                 <li className="issue" key={issue.id}>
-                    <Link to={`/issue/${issue.number}`}>{issue.title} </Link>
+
+                    <Link style={{float:'left'}} to={`/issue/${issue.number}`}>{issue.title} </Link>
+                    <span style={{float:'right'}}><Link to={issue.comments_url}>{issue.comments} comments</Link></span>
+                    <div style={{clear:'both'}}></div>
                     <div>
                         #{issue.number} {state}{" "}
                         {this.renderTimeDiff(issue.created_at)} ago by{" "}
@@ -37,9 +40,23 @@ class IssueList extends Component {
     componentWillMount() {
         this.props.listIssues();
     }
+
+    handleFilterChange(value){
+        console.log(value)
+        this.props.changeFilter(value)
+    }
     render() {
         return (
             <div className="container">
+                <div>
+                    <select className='filter' onChange={(e)=>{this.handleFilterChange(e.target.value)}}>
+                       <option default>Filter</option>
+                       <option value='all'>All</option>
+                       <option value='open'>Open</option>
+                       <option value='closed'>Closed</option>
+
+                    </select>
+                </div>
                 <ul className="issue-list">
                     {this.renderIssues(this.props.issues)}
                 </ul>

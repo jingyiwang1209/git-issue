@@ -1,19 +1,32 @@
-import axios from 'axios'
-export const listIssues = ()=> async dispatch=> {
-  const response = await axios.get('https://api.github.com/repos/facebook/react/issues');
+import axios from "axios";
+export const listIssues = () => async dispatch => {
+  const response = await axios.get(
+    "https://api.github.com/repos/facebook/react/issues"
+  );
 
   dispatch({
-    type:"listIssues",
+    type: "listIssues",
+    payload: response.data
+  });
+};
+
+export const fetchIssue = issueNumber => async dispatch => {
+  const response = await axios.get(
+    `https://api.github.com/repos/facebook/react/issues/${issueNumber}`
+  );
+
+  dispatch({
+    type: "fetchIssue",
+    payload: response.data
+  });
+};
+
+export const changeFilter = (value)=> async dispatch=>{
+  const response = await axios.get(
+     `https://api.github.com/repos/facebook/react/issues?state=${value}`
+    )
+  dispatch({
+    type:"changeFilter",
     payload:response.data
   });
-
-}
-
-export const fetchIssue = (issueNumber)=> async dispatch=>{
-    const response = await axios.get(`https://api.github.com/repos/facebook/react/issues/${issueNumber}`);
-
-    dispatch({
-        type:'fetchIssue',
-        payload:response.data
-    });
-}
+};
