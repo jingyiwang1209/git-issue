@@ -23,10 +23,8 @@ class IssueList extends Component {
             return <IssueItem issue={issue} />;
         });
     }
-    componentWillMount() {
-        const pageNumber = this.props.match.params.pageNumber
-        console.log("componentWillMountpageNumber", pageNumber)
-        this.props.listIssues(pageNumber);
+    componentDidMount() {
+        this.props.listIssues();
     }
 
     handleFilterChange(value) {
@@ -38,11 +36,15 @@ class IssueList extends Component {
             value
         });
     }
+    handlePage(pageNumber){
+        this.props.listIssues(pageNumber);
+    }
     renderPagination(link){
         // when link is not received, need to return something!
         if(!link) { return <div>loading pagination...</div>}
         // when link is received, return the Pagination component
-        return <Pagination link={link}/>
+        return <Pagination link={link}
+                           onClick={(pageNumber)=>this.handlePage(pageNumber)}/>
     }
     render() {
         const inputValue = this.state.value;
